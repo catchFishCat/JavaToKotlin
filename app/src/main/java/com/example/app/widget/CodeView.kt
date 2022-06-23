@@ -1,0 +1,63 @@
+package com.example.app.widget
+
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.Gravity
+import androidx.appcompat.widget.AppCompatTextView
+import com.example.app.R
+import com.example.core.utils.dp2px
+import java.util.*
+
+class CodeView: AppCompatTextView {
+    constructor(context: Context):this(context,null)
+    constructor(context: Context,attr: AttributeSet?):super(context,attr){
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+        gravity = Gravity.CENTER
+        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
+        setTextColor(Color.WHITE)
+
+        paint.isAntiAlias = true
+        paint.style = Paint.Style.STROKE
+        paint.color = getContext().getColor(R.color.colorAccent)
+        paint.strokeWidth = dp2px(6f)
+
+        updateCode()
+    }
+
+    private val paint = Paint()
+    /**
+     * arrayOf 存放包装类型。
+     * 为了性能，采用 intArrayOf longArrayOf 来存放基本数据类型。
+     * **/
+    private val codeList = arrayOf(
+        "kotlin",
+        "android",
+        "java",
+        "http",
+        "https",
+        "okhttp",
+        "retrofit",
+        "tcp/ip"
+    )
+
+
+    fun updateCode() {
+        val random = Random().nextInt(codeList.size)
+        val code = codeList[random]
+        text = code
+    }
+
+
+    override fun onDraw(canvas: Canvas) {
+        /**
+         * 可用 as 转化类型
+         * 基本数据类型可用 toFloat() toInt() 来转化
+         * **/
+        canvas.drawLine(0f, height.toFloat(), width.toFloat(), 0f, paint)
+        super.onDraw(canvas)
+    }
+}
